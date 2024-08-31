@@ -16,3 +16,4 @@ temp.errors
 *.ini
 .d/
 /CMakeLists.txt
+/.idea/.gitignore
