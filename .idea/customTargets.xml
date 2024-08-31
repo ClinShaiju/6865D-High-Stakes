@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CLionExternalBuildManager">
+    <target id="577b3000-e604-4aed-93ba-27e9078e1f9b" name="PROS" defaultType="TOOL">
+      <configuration id="974afd65-fb2e-4b16-b1fc-e0cf8faec8d0" name="PROS" toolchainName="System">
+        <build type="TOOL">
+          <tool actionId="Tool_External Tools_build" />
+        </build>
+        <clean type="TOOL">
+          <tool actionId="Tool_External Tools_clean" />
+        </clean>
+      </configuration>
+    </target>
+  </component>
+</project>
