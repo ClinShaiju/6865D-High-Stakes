@@ -1,8 +1,6 @@
-//
-// Created by shaijcli000 on 9/25/2024.
-//
+#pragma once
+#include "main.h"
 
-#ifndef UTIL_H
-#define UTIL_H
+double returnExponential(int axisValue, int type, float t);
 
-#endif //UTIL_H
+template <typename T> int sgn(T val);

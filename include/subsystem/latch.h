@@ -1,8 +1,6 @@
-//
-// Created by shaijcli000 on 9/25/2024.
-//
-
-#ifndef LATCH_H
-#define LATCH_H
-
-#endif //LATCH_H
+#pragma once
+#include "main.h"
+void runLatchToggle();
+void engageLatch();
+void disengageLatch();
+bool isLatched();

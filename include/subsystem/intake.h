@@ -1,8 +1,7 @@
-//
-// Created by shaijcli000 on 9/25/2024.
-//
+#pragma once
+#include "main.h"
 
-#ifndef INTAKE_H
-#define INTAKE_H
-
-#endif //INTAKE_H
+void intakeIn();
+void intakeOut();
+void intakeStop();
+void runIntake();

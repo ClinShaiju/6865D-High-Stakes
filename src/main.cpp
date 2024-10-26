@@ -1,95 +1,184 @@
 #include "main.h"
+#include "lemlib/asset.hpp"
+#include "lemlib/pose.hpp"
+#include "pros/llemu.hpp"
+#include "pros/misc.h"
+#include "pros/rtos.hpp"
+#include "subsystem/doinky.h"
+#include "subsystem/drivetrain.h"
+#include "subsystem/intake.h"
+#include "subsystem/latch.h"
 
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
+float driveVturn = .5;
+
+float formatHeading(float heading) {
+    int signum = sgn(heading);
+    float output = std::abs(heading);
+
+    while (output > 360) output -= 360;
+    if (signum == -1) return 360 - output;
+    return output;
+}
+
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
+void updateLED() {
+
+	while (true) {
+		lemlib::Pose pose = chassis.getPose();
+
+		pros::lcd::print(1,   "x: %f", pose.x);
+		pros::lcd::print(2,   "y: %f", pose.y);
+		pros::lcd::print(3,   "head: %f", formatHeading(pose.theta));
+
+		// if (isLatched()) {
+
+		// pros::c::controller_print(pros::E_CONTROLLER_MASTER, 1, 1, "%s", "Closed");
+		// } else {
+
+		// pros::c::controller_print(pros::E_CONTROLLER_MASTER, 1, 1, "%s", "Open");
+		// }
+		pros::c::controller_print(pros::E_CONTROLLER_MASTER, 1, 1, "%.2f", (pose.y));
+
+
+		pros::delay(20);
 	}
 }
 
-/**
- * Runs initialization code. This occurs as soon as the program is started.
- *
- * All other competition modes are blocked by initialize; it is recommended
- * to keep execution time for this mode under a few seconds.
- */
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
+	chassis.calibrate();
+	pros::Task task(updateLED);
 
-	pros::lcd::register_btn1_cb(on_center_button);
 }
 
-/**
- * Runs while the robot is in the disabled state of Field Management System or
- * the VEX Competition Switch, following either autonomous or opcontrol. When
- * the robot is enabled, this task will exit.
- */
-void disabled() {}
+void disabled() {
+}
 
-/**
- * Runs after initialize(), and before autonomous when connected to the Field
- * Management System or the VEX Competition Switch. This is intended for
- * competition-specific initialization routines, such as an autonomous selector
- * on the LCD.
- *
- * This task will exit when the robot is enabled and autonomous or opcontrol
- * starts.
- */
-void competition_initialize() {}
+ASSET(firstgoal_txt);
+ASSET(secondgoal_txt);
+ASSET(thirdgoal_txt);
+ASSET(fourthgoal_txt);
 
-/**
- * Runs the user autonomous code. This function will be started in its own task
- * with the default priority and stack size whenever the robot is enabled via
- * the Field Management System or the VEX Competition Switch in the autonomous
- * mode. Alternatively, this function may be called in initialize or opcontrol
- * for non-competition testing purposes.
- *
- * If the robot is disabled or communications is lost, the autonomous task
- * will be stopped. Re-enabling the robot will restart the task, not re-start it
- * from where it left off.
- */
-void autonomous() {}
+void competition_initialize() {
+}
 
-/**
- * Runs the operator control code. This function will be started in its own task
- * with the default priority and stack size whenever the robot is enabled via
- * the Field Management System or the VEX Competition Switch in the operator
- * control mode.
- *
- * If no competition control is connected, this function will run immediately
- * following initialize().
- *
- * If the robot is disabled or communications is lost, the
- * operator control task will be stopped. Re-enabling the robot will restart the
- * task, not resume it from where it left off.
- */
+void skillsAuton() {
+	chassis.setPose(-60, 1.5, 90);
+	intakeIn();
+	pros::delay(500);
+	chassis.follow(firstgoal_txt, 15, 15000);
+	chassis.follow(secondgoal_txt, 15, 15000);
+	chassis.follow(thirdgoal_txt, 15, 15000);
+	chassis.follow(fourthgoal_txt, 15, 15000);
+	
+}
+
+void redBetterAuton() {
+	chassis.setPose(-53.374, 15.5, 180);
+	chassis.moveToPose(-54, -9, 180, 1000); // Push out starting ring
+	chassis.waitUntilDone();
+	chassis.moveToPose(-60, 1.5, 90, 1500, {.forwards=false}); // score alliance stake
+	chassis.waitUntilDone();
+	intakeIn();
+	chassis.waitUntilDone();
+	pros::delay(500);
+	intakeStop();
+	chassis.moveToPose(-28.322, 46, 56, 2000); // first ring
+	intakeIn();
+	chassis.waitUntil(70);
+	intakeStop();
+	chassis.waitUntilDone();
+	chassis.moveToPose(-29, 27, 0, 1200, {.forwards=false, .lead=0.3}); // goal
+	chassis.waitUntil(3);
+	disengageLatch();
+	chassis.waitUntil(15);
+	engageLatch();
+	chassis.waitUntilDone();
+	chassis.moveToPose(-15, 43.387, 62, 2000); // second ring
+	intakeIn();
+	chassis.waitUntilDone();
+	chassis.moveToPose(-20, 45, 50, 500, {.forwards=false}); // reverse
+	chassis.waitUntilDone();
+	chassis.moveToPoint(-20, 52.921, 1000); // third ring
+	chassis.waitUntilDone();
+	chassis.turnToHeading(-45, 500);
+	chassis.waitUntilDone();
+	chassis.moveToPoint(-26, 0, 5000, {.maxSpeed=50}); // ladder
+	pros::delay(500);
+	intakeStop();
+	engageDoinky();
+	chassis.waitUntilDone();
+}
+
+void blueBetterAuton() {
+	chassis.setPose(53.374, 16.5, -180);
+	chassis.moveToPose(53, -9, -180, 1000); // Push out starting ring
+	chassis.waitUntilDone();
+	chassis.moveToPose(61, 0, -90, 1500, {.forwards=false}); // score alliance stake
+	chassis.waitUntilDone();
+	intakeIn();
+	chassis.waitUntilDone();
+	pros::delay(500);
+	intakeStop();
+	chassis.moveToPose(20.322, 46, -56, 2000); // first ring
+	intakeIn();
+	chassis.waitUntil(60);
+	intakeStop();
+	chassis.waitUntilDone();
+	chassis.moveToPose(20, 30, 0, 1200, {.forwards=false, .lead=0.3, .maxSpeed=80}); // goal
+	chassis.waitUntil(3);
+	disengageLatch();
+	chassis.waitUntil(15);
+	engageLatch();
+	chassis.waitUntilDone();
+	chassis.moveToPose(6, 42.387, -62, 2000); // second ring
+	pros::delay(100);
+	intakeIn();
+	chassis.waitUntilDone();
+	chassis.moveToPose(11, 44, -50, 500, {.forwards=false}); // reverse
+	chassis.waitUntilDone();
+	chassis.moveToPoint(11, 51.921, 1000); // third ring
+	chassis.waitUntilDone();
+	chassis.turnToHeading(45, 500);
+	chassis.waitUntilDone();
+	chassis.moveToPoint(23, 0, 5000, {.maxSpeed=50}); // ladder
+	pros::delay(500);
+	intakeStop();
+	engageDoinky();
+	chassis.waitUntilDone();
+}
+
+void autonomous() {
+    skillsAuton();
+	
+
+}
+
+
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::MotorGroup left_mg({1, -2, 3});    // Creates a motor group with forwards ports 1 & 3 and reversed port 2
-	pros::MotorGroup right_mg({-4, 5, -6});  // Creates a motor group with forwards port 5 and reversed ports 4 & 6
-
 
 	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);  // Prints status of the emulated screen LCDs
+		lemlib::Pose pose = chassis.getPose();
 
-		// Arcade control scheme
-		int dir = master.get_analog(ANALOG_LEFT_Y);    // Gets amount forward/backward from left joystick
-		int turn = master.get_analog(ANALOG_RIGHT_X);  // Gets the turn left/right from right joystick
-		left_mg.move(dir - turn);                      // Sets left motor voltage
-		right_mg.move(dir + turn);                     // Sets right motor voltage
-		pros::delay(20);                               // Run for 20 ms then update
-        pros::delay(20);
-        }
+		pros::lcd::print(1,   "x: %f", pose.x);
+		pros::lcd::print(2,   "y: %f", pose.y);
+		pros::lcd::print(3,   "head: %f", formatHeading(pose.y));
+
+		if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) autonomous();
+		else {
+			runLatchToggle();
+			runIntake();
+			runDoinkyToggle();
+			int yAxis = returnExponential(controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), 1, 10);
+			int xAxis = returnExponential(controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X), 2, 6);
+			chassis.arcade(yAxis, xAxis);
+			pros::delay(20);
+		}
+	}
 }
+
+
+//hawk tuah SPIT ON THAT THANG!!!!

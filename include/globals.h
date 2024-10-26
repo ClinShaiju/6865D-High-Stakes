@@ -1,8 +1,18 @@
-//
-// Created by shaijcli000 on 9/25/2024.
-//
+#pragma once
+#include "main.h"
 
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#define PORT_INERTIAL 6
 
-#endif //GLOBALS_H
+#define PORT_INTAKE_LEFT -1
+#define PORT_INTAKE_RIGHT (10)
+
+#define PORT_DRIVE_LEFT_FRONT (-9)  //reversed
+#define PORT_DRIVE_LEFT_TOP 8
+#define PORT_DRIVE_LEFT_BOTTOM (-7) //reversed
+#define PORT_DRIVE_RIGHT_FRONT 2
+#define PORT_DRIVE_RIGHT_TOP (-3) //reversed
+#define PORT_DRIVE_RIGHT_BOTTOM 4
+
+#define PORT_ADI_LATCH_LEFT 'A'
+#define PORT_ADI_LATCH_RIGHT 'H'
+#define PORT_ADI_DOINKY 'B'

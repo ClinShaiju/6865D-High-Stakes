@@ -24,7 +24,7 @@
  * E_CONTROLLER_MASTER is pedantically correct within the PROS styleguide, but
  * not convenient for most student programmers.
  */
-#define PROS_USE_SIMPLE_NAMES
+// #define PROS_USE_SIMPLE_NAMES
 
 /**
  * If defined, C++ literals will be available for use. All literals are in the
@@ -35,7 +35,7 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
-
+#include "lemlib/api.hpp" // IWYU pragma: keep
 /**
  * You should add more #includes here
  */
@@ -73,7 +73,16 @@ void opcontrol(void);
 #ifdef __cplusplus
 /**
  * You can add C++-only headers here
+
  */
+
+#include "util.h"
+#include "globals.h"
+#include "subsystem/latch.h"
+#include "subsystem/drivetrain.h"
+#include "subsystem/intake.h"
+#include "subsystem/doinky.h"
+
 //#include <iostream>
 #endif
 
