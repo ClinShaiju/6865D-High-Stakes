@@ -35,6 +35,7 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
+#include "pros/apix.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
 /**
  * You should add more #includes here
@@ -76,14 +77,19 @@ void opcontrol(void);
 
  */
 
-#include "util.h"
+#include "util/util.h"
+#include "util/colorsort.h"
 #include "globals.h"
 #include "subsystem/latch.h"
 #include "subsystem/drivetrain.h"
 #include "subsystem/intake.h"
 #include "subsystem/doinky.h"
+#include "subsystem/neutral_mech.h"
+#include "auton/selector.h"
+#include "auton/auton.h"
 
 //#include <iostream>
+#include <stdio.h>
 #endif
 
 #endif  // _PROS_MAIN_H_

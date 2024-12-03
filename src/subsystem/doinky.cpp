@@ -1,17 +1,17 @@
 #include "doinky.h"
 #include "main.h"
 
-pros::adi::Pneumatics doinky(PORT_ADI_DOINKY, false);
+pros::adi::Pneumatics doinky(PORT_ADI_DOINKY, true);
 
 void runDoinkyToggle() {
     if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) engageDoinky();
     else disengageDoinky();
 }
-void engageDoinky() {
+void disengageDoinky() {
     doinky.extend();
 }
 
-void disengageDoinky() {
+void engageDoinky() {
     doinky.retract();
 }
 
