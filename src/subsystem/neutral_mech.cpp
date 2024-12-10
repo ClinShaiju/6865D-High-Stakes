@@ -19,6 +19,35 @@ bool redirecting = false;
 
 bool collapsing = false;
 
+int collapseWait = 500;
+
+void disengageLift() {
+  liftLeft.extend();
+  liftRight.extend();
+}
+
+void engageLift() {
+  liftLeft.retract();
+  liftRight.retract();
+} 
+
+void engageFlipout () {
+  flipout.extend();
+}
+
+void disengageFlipout () {
+  flipout.retract();
+}
+
+void setRedirect(bool redirect) {
+  redirecting = redirect;
+}
+
+void setCollapse(int milli) {
+  collapsing = true;
+  collapseWait = milli;
+}
+
 void toggleLift() {
   liftLeft.toggle();
   liftRight.toggle();
@@ -63,6 +92,7 @@ void macro_collapse() {
       pros::delay(1000);
       flipout.retract();
       collapsing = false;
+      collapseWait = 500;
     }
     pros::delay(20);
   }

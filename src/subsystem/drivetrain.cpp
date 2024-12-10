@@ -1,5 +1,7 @@
 #include "drivetrain.h"
+#include "lemlib/chassis/trackingWheel.hpp"
 #include "main.h"
+#include "pros/rotation.hpp"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
@@ -64,10 +66,14 @@ lemlib::ControllerSettings angularController(4, // proportional gain (kP)
 //lemlib::TrackingWheel yTracker(&yEncoder, 2.75, -0.0196850394, 1);
 
 pros::Imu imu = pros::Imu(PORT_INERTIAL); 
+pros::Rotation horizontalTracker(PORT_ROTATION_HORIZONTAL);
+pros::Rotation verticalTracker(PORT_ROTATION_VERTICAL);
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalTracker, lemlib::Omniwheel::NEW_2, 1.875);
+lemlib::TrackingWheel vertical_tracking_wheel(&verticalTracker, lemlib::Omniwheel::NEW_2, 0.875);
 
-lemlib::OdomSensors odomSensors(nullptr, // vertical tracking wheel 1, set to null
+lemlib::OdomSensors odomSensors(&vertical_tracking_wheel, // vertical tracking wheel 1, set to null
                                 nullptr, // vertical tracking wheel 2, set to nullptr as we are using IMEs
-                                nullptr, // horizontal tracking wheel 1
+                                &horizontal_tracking_wheel, // horizontal tracking wheel 1
                                 nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                                 &imu // inertial sensor
 );

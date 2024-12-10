@@ -1,10 +1,13 @@
 #include "auton/selector.h"
 #include "main.h"
+#include "subsystem/intake.h"
 
 pros::Optical optical(PORT_OPTICAL);
 
 #define STOP_DISTANCE 320
 #define WAIT_TIME 200
+
+bool holdRing = false;
 
 Alliance getColor(double hue) {
   if (hue > 190 && hue < 230)
@@ -43,7 +46,20 @@ void colorSort() {
       pros::delay(WAIT_TIME);
       setIntakeState(prevIntakeState);
     }
-
+    else if (holdRing && seenColor == currentAlliance && seenColor != OTHER) {
+      setIntakeState(STOPPED);
+    }
     pros::delay(20);
   }
 }
+
+// double getOpticalColor()
+// {
+//   return optical.get_hue();
+// }
+
+void setIntakeHold (bool hold)
+{
+    holdRing = hold;
+}
+
