@@ -17,10 +17,10 @@ pros::MotorGroup driveRight({PORT_DRIVE_RIGHT_FRONT, PORT_DRIVE_RIGHT_TOP, PORT_
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&driveLeft, // left motor group
                               &driveRight, // right motor group
-                              11.875, // 10 inch track width
-                              lemlib::Omniwheel::NEW_4, // using new 4" omnis
-                              300, // drivetrain rpm is 300
-                              8 // chase power is 2. If we had traction wheels, it would have been 8
+                              13, // 10 inch track width
+                              lemlib::Omniwheel::NEW_325, // using new 4" omnis
+                              450, // drivetrain rpm is 300
+                              2 // chase power is 2. If we had traction wheels, it would have been 8
 );
 
 /*
@@ -30,27 +30,27 @@ lemlib::Drivetrain drivetrain(&driveLeft, // left motor group
 */ 
 
 // lateral motion controller
-lemlib::ControllerSettings linearController(40, // proportional gain (kP)
+lemlib::ControllerSettings linearController(15, // proportional gain (kP)
                                               0, // integral gain (kI)
-                                              250, // derivative gain (kD)
-                                              0, // anti windup
-                                              0, // small error range, in inches
-                                              0, // small error range timeout, in milliseconds
-                                              0, // large error range, in pp inches
-                                              0, // large error range timeout, in milliseconds
+                                              75, // derivative gain (kD)
+                                              3, // anti windup
+                                              1, // small error range, in inches
+                                              100, // small error range timeout, in milliseconds
+                                              3, // large error range, in inches
+                                              500, // large error range timeout, in milliseconds
                                               20 // maximum acceleration (slew)
 );
 
 // angular motion controller
-lemlib::ControllerSettings angularController(4, // proportional gain (kP)
-                                             0, // integral gain (kI)
-                                             35, // derivative gain (kD)
-                                             3, // anti windup
-                                             1, // small error range, in degrees
-                                             100, // small error range timeout, in milliseconds
-                                             3, // large error range, in degrees
-                                             500, // large error range timeout, in milliseconds
-                                             0 // maximum acceleration (slew)
+lemlib::ControllerSettings angularController(2, // proportional gain (kP)
+                                              0, // integral gain (kI)
+                                              10, // derivative gain (kD)
+                                              3, // anti windup
+                                              1, // small error range, in inches
+                                              100, // small error range timeout, in milliseconds
+                                              3, // large error range, in inches
+                                              500, // large error range timeout, in milliseconds
+                                              0 // maximum acceleration (slew)
 );
 
 /*
@@ -68,10 +68,10 @@ lemlib::ControllerSettings angularController(4, // proportional gain (kP)
 pros::Imu imu = pros::Imu(PORT_INERTIAL); 
 pros::Rotation horizontalTracker(PORT_ROTATION_HORIZONTAL);
 pros::Rotation verticalTracker(PORT_ROTATION_VERTICAL);
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalTracker, lemlib::Omniwheel::NEW_2, 1.875);
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalTracker, lemlib::Omniwheel::NEW_2, -2.25);
 lemlib::TrackingWheel vertical_tracking_wheel(&verticalTracker, lemlib::Omniwheel::NEW_2, 0.875);
 
-lemlib::OdomSensors odomSensors(&vertical_tracking_wheel, // vertical tracking wheel 1, set to null
+lemlib::OdomSensors odomSensors(nullptr, // vertical tracking wheel 1, set to null
                                 nullptr, // vertical tracking wheel 2, set to nullptr as we are using IMEs
                                 &horizontal_tracking_wheel, // horizontal tracking wheel 1
                                 nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one

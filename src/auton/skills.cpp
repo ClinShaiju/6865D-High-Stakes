@@ -25,24 +25,6 @@ void skillsAuton() {
 	intakeIn();
 	chassis.moveToPoint(-20, -25, 1500); //intake one ring
 	chassis.waitUntilDone();
-	chassis.moveToPose(31, -52, 90,5000, {.lead=.3}); //hold far ring
-	chassis.waitUntil(53);
-	setRedirect(true);
-	chassis.turnToHeading(-135, 5000);
-	chassis.moveToPose(0, -55, 180, 5000);
-	chassis.waitUntilDone();
-	setRedirect(false);
-	intakeIn();
-	engageLift();
-	pros::delay(2000);
-	engageFlipout();
-	pros::delay(2000);
-	chassis.moveToPose(0, -59, 180, 2500);
-	chassis.waitUntilDone();
-	disengageLift();
-	pros::delay(2000);
-	disengageFlipout();
-	pros::delay(2000);
 	chassis.turnToHeading(-90, 1500);
 	chassis.waitUntilDone();
 	chassis.moveToPose(-31, -45, -90, 2000, {.lead=.25, .maxSpeed=75}); //ring w/ straight line

@@ -1,9 +1,11 @@
 #include "intake.h"
+#include "globals.h"
 #include "latch.h"
 #include "main.h"
 #include "pros/misc.h"
 
-pros::MotorGroup intake({PORT_INTAKE_LEFT, PORT_INTAKE_RIGHT});
+pros::Motor intake(PORT_INTAKE);
+pros::Motor hooks(PORT_HOOKS);
 IntakeState intakeState = STOPPED;
 
 void intakeIn(){
@@ -13,16 +15,21 @@ void intakeIn(){
     }
     intakeState = IN;
     intake.move(IN);
+    hooks.move(IN);
 }
 
 void intakeOut(){
     intakeState = OUT;
     intake.move(OUT);
+    hooks.move(OUT);
+
 }
 
 void intakeStop(){
     intakeState = STOPPED;
     intake.move(STOPPED);
+    hooks.move(STOPPED);
+
 }
 
 void runIntake() {
@@ -37,9 +44,9 @@ IntakeState getIntakeState() {
 
 void setIntakeState(IntakeState state) {
     intakeState = state;
-    intake.move(state);
+    hooks.move(state);
 }
 
 double getIntakeRotations() {
-    return intake.get_position();
+    return hooks.get_position();
 }

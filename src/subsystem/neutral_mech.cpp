@@ -21,12 +21,12 @@ bool collapsing = false;
 
 int collapseWait = 500;
 
-void disengageLift() {
+void engageLift() {
   liftLeft.extend();
   liftRight.extend();
 }
 
-void engageLift() {
+void disengageLift() {
   liftLeft.retract();
   liftRight.retract();
 } 
@@ -99,7 +99,7 @@ void macro_collapse() {
 }
 
 void runNeutralMech() {
-  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2))
+  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
     toggleLift();
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN))
     toggleFlipout();

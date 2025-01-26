@@ -7,13 +7,22 @@
 #include "subsystem/neutral_mech.h"
 #include "util/colorsort.h"
 
+void printScreen() {
+	while (true) {
+	
+	controller.print(0, 0, "X:%.2f Y: %.2f", chassis.getPose().x, chassis.getPose().y);
+	pros::delay(20);
+	}
+}
+
 void initialize() {
-	chassis.calibrate();
 	pros::Task colorSortTask(colorSort);
-	pros::Task redirectTask(macro_redirect);
-	pros::Task collapseTask(macro_collapse);
-	engageLatch();
+	// pros::Task redirectTask(macro_redirect);
+	// pros::Task collapseTask(macro_collapse);
+	pros::Task printTask(printScreen);
+	disengageLatch();
 	gui();
+	chassis.calibrate();
 
 }
 
@@ -26,12 +35,12 @@ void competition_initialize() {
 
 
 void autonomous() {
-    autonSelector();
+	autonSelector();
 }
 
 void opcontrol() {
-	chassis.calibrate();
-	autonomous();
+
+	// autonomous();	
 
 	while (true) {
 			runLatchToggle();
@@ -41,7 +50,6 @@ void opcontrol() {
 			int yAxis = returnExponential(controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), 1, 10);
 			int xAxis = returnExponential(controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X), 2, 6);
 			chassis.arcade(yAxis, xAxis);
-			if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) autonomous();
 			pros::delay(20);
 
 	}

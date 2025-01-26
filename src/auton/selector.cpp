@@ -11,7 +11,7 @@
 Alliance currentAlliance = RED;
 Side currentSide = RING;
 bool isElim = false;
-bool isSkills = true;
+bool isSkills = false;
 
 static lv_obj_t* allianceSwitch;
 static lv_obj_t* sideSwitch;

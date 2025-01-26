@@ -9,7 +9,8 @@ enum IntakeState {
     BLOCKED
 };
 
-extern pros::MotorGroup intake;
+extern pros::Motor intake;
+extern pros::Motor hooks;
 
 void intakeIn();
 void intakeOut();

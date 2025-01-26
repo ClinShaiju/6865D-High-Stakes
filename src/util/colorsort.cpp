@@ -5,7 +5,7 @@
 pros::Optical optical(PORT_OPTICAL);
 
 #define STOP_DISTANCE 320
-#define WAIT_TIME 200
+#define WAIT_TIME 500
 
 bool holdRing = false;
 
@@ -36,9 +36,6 @@ void colorSort() {
 
     if (seenColor != currentAlliance && seenColor != OTHER) {
       while (limitSwitch.get_value()) {
-        pros::delay(20);
-      }
-      while (!limitSwitch.get_value()) {
         pros::delay(20);
       }
       setIntakeState(BLOCKED);
