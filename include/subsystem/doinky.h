@@ -4,5 +4,7 @@
 void runDoinkyToggle();
 void engageDoinky();
 void disengageDoinky();
+void engageClaw();
+void disengageClaw();
 bool isDoinked();
 

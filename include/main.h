@@ -81,10 +81,10 @@ void opcontrol(void);
 #include "util/colorsort.h"
 #include "globals.h"
 #include "subsystem/latch.h"
+#include "subsystem/ladybrown.h"
 #include "subsystem/drivetrain.h"
 #include "subsystem/intake.h"
 #include "subsystem/doinky.h"
-#include "subsystem/neutral_mech.h"
 #include "auton/selector.h"
 #include "auton/auton.h"
 

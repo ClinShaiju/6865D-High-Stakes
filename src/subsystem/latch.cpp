@@ -14,12 +14,13 @@ int prevClampingDistance = 0;
 #define CLAMPING_DISTANCE 20
 
 void runLatchToggle() {
-  autoClamp();
-  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+  // autoClamp();
+  if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {
     autoClamping = false;
     latchLeft.toggle();
     latchRight.toggle();
   }
+  
 }
 void autoClamp() {
   holding = (clampSensor.get_distance() < CLAMPING_DISTANCE &&

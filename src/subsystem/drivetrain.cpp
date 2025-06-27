@@ -68,7 +68,7 @@ lemlib::ControllerSettings angularController(2, // proportional gain (kP)
 pros::Imu imu = pros::Imu(PORT_INERTIAL); 
 pros::Rotation horizontalTracker(PORT_ROTATION_HORIZONTAL);
 pros::Rotation verticalTracker(PORT_ROTATION_VERTICAL);
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalTracker, lemlib::Omniwheel::NEW_2, -2.25);
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalTracker, lemlib::Omniwheel::NEW_2, -3.25);
 lemlib::TrackingWheel vertical_tracking_wheel(&verticalTracker, lemlib::Omniwheel::NEW_2, 0.875);
 
 lemlib::OdomSensors odomSensors(nullptr, // vertical tracking wheel 1, set to null

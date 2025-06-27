@@ -12,12 +12,14 @@ enum IntakeState {
 extern pros::Motor intake;
 extern pros::Motor hooks;
 
-void intakeIn();
-void intakeOut();
-void intakeStop();
 void runIntake();
 
 IntakeState getIntakeState();
-void setIntakeState(IntakeState state);
-
-double getIntakeRotations();
+IntakeState getHookState();
+/**
+* @brief hello
+*
+* @param intakeSt sets state for intake
+* @param hooksSt sets state for hooks
+*/
+void setIntakeState(IntakeState intakeSt, IntakeState hooksSt);

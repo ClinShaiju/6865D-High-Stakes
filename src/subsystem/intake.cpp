@@ -7,46 +7,28 @@
 pros::Motor intake(PORT_INTAKE);
 pros::Motor hooks(PORT_HOOKS);
 IntakeState intakeState = STOPPED;
-
-void intakeIn(){
-    if (!isLatched()) {
-        engageLatch();
-        pros::c::controller_rumble(pros::E_CONTROLLER_MASTER, ".");
-    }
-    intakeState = IN;
-    intake.move(IN);
-    hooks.move(IN);
-}
-
-void intakeOut(){
-    intakeState = OUT;
-    intake.move(OUT);
-    hooks.move(OUT);
-
-}
-
-void intakeStop(){
-    intakeState = STOPPED;
-    intake.move(STOPPED);
-    hooks.move(STOPPED);
-
-}
+IntakeState hooksState = STOPPED;
 
 void runIntake() {
-    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && intakeState != BLOCKED) intakeIn();
-    else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) intakeOut();
-    else if (intakeState != BLOCKED) intakeStop();
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && intakeState != BLOCKED) {
+        setIntakeState(IN, STOPPED);
+    }
+    else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && intakeState != BLOCKED) setIntakeState(IN, IN);
+    else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) setIntakeState(OUT, OUT);
+    else if (intakeState != BLOCKED) setIntakeState(STOPPED, STOPPED);
 }
 
 IntakeState getIntakeState() {
     return intakeState;
 }
 
-void setIntakeState(IntakeState state) {
-    intakeState = state;
-    hooks.move(state);
+IntakeState getHookState() {
+    return hooksState;
 }
 
-double getIntakeRotations() {
-    return hooks.get_position();
+void setIntakeState(IntakeState intakeSt, IntakeState hooksSt) {
+    intakeState = intakeSt;
+    hooksState = hooksSt;
+    intake.move(intakeSt);
+    hooks.move(hooksSt);
 }
